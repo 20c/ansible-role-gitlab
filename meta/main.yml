@@ -1,0 +1,14 @@
+galaxy_info:
+  author: Matt Griswold
+  description: An Ansible role for configuring gitlab
+  company: 20C
+  license: Apache
+  min_ansible_version: 2
+  platforms:
+  - name: EL
+    versions:
+      - all
+  - name: Fedora
+    versions:
+      - all
+dependencies: []

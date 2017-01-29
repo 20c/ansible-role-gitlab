@@ -1,0 +1,28 @@
+
+- block:
+
+  - name: install yum repo
+    template:
+      src: gitlab.repo
+      dest: /etc/yum.repos.d/
+
+  - name: blindly adding yum gpg key
+    rpm_key:
+      state: present
+      key: https://packages.gitlab.com/gpg.key
+#      key: https://packages.gitlab.com/gitlab/gitlab-ce/gpgkey
+
+  - name: install gitlab
+    package: name={{ gitlab_package_name }} state=installed
+
+# TODO run gitlab-ctl reconfigure
+
+  - name: install config file
+    template:
+      src: gitlab.rb
+      dest: /etc/gitlab/gitlab.rb
+
+  - include: disk.yml
+
+  tags:
+    - gitlab

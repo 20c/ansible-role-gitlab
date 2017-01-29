@@ -1,0 +1,22 @@
+
+gitlab_enabled: false
+gitlab_package_name: gitlab-ce
+
+gitlab_repo_disk: false
+
+gitlab_external_url: "https://{{ gitlab_external_domain }}"
+gitlab_external_email: "gitlab@{{ gitlab_external_domain }}"
+
+gitlab_redirect_http_to_https: true
+gitlab_ssl_certificate: "/etc/pki/tls/certs/{{ gitlab_external_domain }}/fullchain.pem"
+gitlab_ssl_certificate_key: "/etc/pki/tls/certs/{{ gitlab_external_domain }}/privkey.pem"
+
+gitlab_email_display_name: GitLab
+gitlab_email_from: "{{ gitlab_external_email }}"
+gitlab_email_reply_to: "{{ gitlab_external_email }}"
+
+gitlab_omniauth_enabled: true
+gitlab_allow_single_sign_on: true
+gitlab_omniauth_block_auto_created_users: true
+gitlab_omniauth_allow_single_sign_on: []
+

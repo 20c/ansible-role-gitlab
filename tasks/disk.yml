@@ -1,0 +1,38 @@
+
+- block:
+
+    - name: setup volume group
+      lvg:
+        vg: "{{ gitlab_repo_vg }}"
+        pvs: "{{ gitlab_repo_disk }}"
+        pesize: "{{ gitlab_repo_vg_pesize | d(omit) }}"
+
+#    - name: setup logical volume
+#      lvol: vg={{ gitlab_repo_vg }} lv={{item.name}} size={{item.size}}
+#      with_items:
+#        - name: git-data
+#          size: 100%FREE
+#
+# Ansible bug:
+# failed: [git.ch2.mgmt] (item={u'name': u'git-data', u'size': u'100%FREE'}) => {"failed": true, "item": {"name": "git-data", "size": "100%FREE"}, "msg": "Sorry, no shrinking of git-data to 0 permitted."}
+
+    - name: mkfs on git-data
+      filesystem: dev=/dev/{{ gitlab_repo_vg }}/git-data fstype=ext4
+
+    - name: mount git-data
+      mount: name=/var/opt/gitlab/git-data
+        src=/dev/{{ gitlab_repo_vg }}/git-data
+        fstype=ext4
+        opts=noatime,nodiratime
+        state=mounted
+        dump=1
+        passno=2
+
+  when:
+    - gitlab_repo_disk != false
+    - gitlab_repo_disk != None
+
+  tags:
+    - gitlab
+    - gitlab_disk
+
